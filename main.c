@@ -4,11 +4,9 @@
 
 #include "libsmptr/include/smptr.h"
 
-// Please refer to smptr.h for function description
-
 void printfAfterFree( void *ptr ) {
     ( void )ptr;
-    printf( "In dtor_function!!" );
+    printf( "In dtor_function!!\n" );
 }
 
 void secondFunc( void *ptr ) {
