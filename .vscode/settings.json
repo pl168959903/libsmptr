@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "smptr.h": "c",
+        "type_traits": "c",
+        "stdarg.h": "c"
+    }
+}

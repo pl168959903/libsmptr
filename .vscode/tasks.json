@@ -12,7 +12,7 @@
                 "-Wfatal-errors",
                 "-std=gnu11",
                 "${workspaceFolder}\\main.c",
-                //"${workspaceFolder}\\libsmptr\\source\\*",
+                "${workspaceFolder}\\libsmptr\\smptr.c",
                 "-I${workspaceFolder}\\libsmptr\\include\\",
                 "-o",
                 "${workspaceFolder}\\main.exe"
