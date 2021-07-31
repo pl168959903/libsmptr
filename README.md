@@ -12,6 +12,13 @@
 
 ## 解構子型別
 * typedef void ( *dtor_function )( void *ptr );
+>ptr: 解構子所在的智能指標位址。
+```c
+void printfAfterFree( void *ptr ) {
+    ( void )ptr;
+    printf( "In dtor_function!!\n" );
+}
+```
 
 ## 屬性宏
 * #define smartPtrAttr __attribute__( ( cleanup( smartFree ) ) 
@@ -22,22 +29,22 @@ smartPtrAttr int *p = smartAlloc(sizeof(int));
 ## 功能說明
 ### void *smartAlloc( size_t allocSize );
 * @brief  分配智能指標
-* @note   指標需添加 "smartPtrAttr" 屬性
+* @note   變數需添加 "smartPtrAttr" 屬性
 * @param  allocSize: 大小
 * @retval 指標位址
 
 
 ### void *smartShare( void *ptr );
 * @brief  共用指標
-* @note   共用已配配的指標
+* @note   共用已配的指標
 * @param  *ptr: 已分配的指標
-* @retval 位址
+* @retval 指標位址
 
 
 ### void  smartAddDestructor( void *ptr, dtor_function dtor );
 * @brief  添加解構子函式
-* @note   解構子須符合 "dtor_function" 類型，ptr 解構子所在的指標。
-* @param  *ptr: 添加的智能指標
+* @note   解構子須符合 "dtor_function" 類型。
+* @param  *ptr: 被添加的指標位址
 * @param  dtor: 解構子
 * @retval None
 
