@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <limits.h>
 
 #define container_of( ptr, type, member )                                 \
     __extension__( {                                                      \

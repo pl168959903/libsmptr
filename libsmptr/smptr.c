@@ -4,7 +4,7 @@
 
 s_allocator smalloc_allocator = {malloc, free};
 
-static SMPTR_INLINE size_t atomic_add( volatile size_t *count, const size_t limit, const size_t val ) {
+static SMPTR_INLINE size_t atomic_add( volatile int *count, const int limit, const int val ) {
     size_t old_count, new_count;
     do {
         old_count = *count;
@@ -14,11 +14,11 @@ static SMPTR_INLINE size_t atomic_add( volatile size_t *count, const size_t limi
     return new_count;
 }
 
-static SMPTR_INLINE size_t atomic_increment( volatile size_t *count ) {
-    return atomic_add( count, SIZE_MAX, 1 );
+static SMPTR_INLINE size_t atomic_increment( volatile int *count ) {
+    return atomic_add( count, INT_MAX, 1 );
 }
 
-static size_t atomic_decrement( volatile size_t *count ) {
+static size_t atomic_decrement( volatile int *count ) {
     return atomic_add( count, 0, -1 );
 }
 
@@ -32,7 +32,7 @@ void *smartAlloc( size_t allocSize)  {
     void * basePtr   = ( void * )smalloc_allocator.alloc( totalSize );
     smPtr_header_t *st = ( smPtr_header_t * )basePtr;
     *st                = ( smPtr_header_t ){ .dtor = NULL, .possess_count = 0, .alloSize = allocSize };
-    atomic_increment(&(st->possess_count));
+    atomic_increment((volatile int*)&(st->possess_count));
     return ( void * )( st->smPtr );
 }
 
@@ -40,7 +40,7 @@ void smartFree( void *clPtr ) {
     void * ptr = *(void**)clPtr;
     void* basePtr = container_of(ptr, smPtr_header_t, smPtr);
     smPtr_header_t *st = ( smPtr_header_t*) basePtr;
-    if(atomic_decrement(&st->possess_count)) return;
+    if(atomic_decrement((volatile int*)&st->possess_count)) return;
     if(st->dtor) st->dtor(ptr);
     smalloc_allocator.dealloc( basePtr );
 }
@@ -49,7 +49,7 @@ SMPTR_MALLOC_API
 void *smartShare(void *ptr){
     void* basePtr = container_of(ptr, smPtr_header_t, smPtr);
     smPtr_header_t *st = ( smPtr_header_t*) basePtr;
-    atomic_increment(&(st->possess_count));
+    atomic_increment((volatile int*)&(st->possess_count));
     return ptr;
 }
 
