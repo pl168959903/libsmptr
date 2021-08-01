@@ -1,6 +1,6 @@
 
-#include "include/smptr.h"
-#include "include/smptr_common.h"
+#include ".\include\smptr.h"
+#include ".\include\smptr_common.h"
 
 s_allocator smalloc_allocator = {malloc, free};
 
